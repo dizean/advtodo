@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Validators, FormControl, ReactiveFormsModule, FormGroup } from '@angular/forms';
+import { Validators, FormControl, ReactiveFormsModule, FormGroup,FormArray } from '@angular/forms';
 import { ServicesService } from 'src/services/services.service';
-
 @Component({
   selector: 'todo',
   standalone: true,
@@ -23,7 +22,6 @@ export class ToDOComponent {
     owner : new FormControl('', Validators.required),
     task : new FormControl('', Validators.required)
   })
-
   todolist: any[] = []
 
   async pushItemtoList() {
@@ -41,12 +39,28 @@ export class ToDOComponent {
       console.log('name is null or empty');
     }
   }
-  async pushtoDatabase() {
-    if (this.todolist) { 
-      const response = await this.apiService.Post('/todo', this.todolist);
-      this.showModal = false;
-    } else {
-      console.log('name is null or empty');
+  showList (){
+    console.log(this.todolist);
+  }
+  async pushToDatabase() {
+    if (this.todolist.length === 0) {
+      console.log('No items to push to database');
+      return;
+    }
+    console.log(this.todolist);
+    const newList = this.todolist.map(item => ({ owner: item.task, task: item.owner }));
+    try {
+      const response = await this.apiService.Post('todo', 'create', newList);
+      if (response) { 
+        console.log('Items pushed successfully');
+
+      } else {
+        console.error('Error pushing to database:', response);
+      }
+    } catch (error) {
+      console.error('Error pushing to database:', error);
     }
   }
+
+  
 }
