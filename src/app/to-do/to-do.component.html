@@ -42,14 +42,47 @@
 
 
 
-<div *ngIf = "showModal" id="modal">
+<div 
+*ngIf = "showModal" 
+id="modal"
+[formGroup]="todo" 
+(ngSubmit)="pushItemtoList()">
   <form action="">
     <label for="Owner">Owner</label>
-    <input type="text" name="owner" placeholder="Owner">
+    <input type="text" name="owner"  formControlName="owner" placeholder="Owner">
     <label for="todo">To do</label>
-    <input type="text" name="todo" placeholder="Owner">
-    <button>Submit</button>
+    <input type="text" name="task" formControlName="task" placeholder="Task">
+    <button type="submit">Submit</button>
     <button>Cancel</button>
   </form>
 </div>
+<div id="list-wrapper" class="bg-red-300 w-11/12 flex flex-wrap justify-center mx-auto my-0 p-4 gap-14">
+  @for (todo of todolist; track todo.id) {
+  <div id="lis-content" class="bg-blue-400 w-96 flex flex-col  m-0 rounded-xl">
+      <!-- <li class="bg-slate-100 h-10 p-8 flex items-center w-11/12 mx-auto my-2 rounded-lg text-2xl">{{todo.id}}</li>  -->
+      <label for="name" class='text-5xl text-left w-11/12 mx-auto py-3'>Owner:</label>
+      <input 
+      name="owner" 
+      type="text" 
+      id="name" 
+      class="bg-slate-100 h-10 p-8 flex items-center w-11/12 mx-auto my-2 rounded-lg text-2xl focus:outline-none" 
+      value="{{todo.owner}}"/>
+      <label for="name" class='text-5xl text-left w-11/12 mx-auto py-3'>To do:</label>
+      <input 
+      name="task" 
+      type="text" 
+      id="name" 
+      class="bg-slate-100 h-10 p-8 flex items-center w-11/12 mx-auto my-2 rounded-lg text-2xl focus:outline-none" 
+      value="{{todo.task}}"/>
+     <button>
+      
+     </button>
+  </div>
+} @empty {
+  <div id="lis-content" class="w-full m-0 rounded-sm">
+      <li class="text-3xl h-10 p-8 flex items-center justify-center mx-auto my-4">No Plans Yet</li>
+ 
+</div>
+}
+</div> 
 </div>  
