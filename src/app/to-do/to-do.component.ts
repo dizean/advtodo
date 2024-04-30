@@ -43,7 +43,7 @@ export class ToDOComponent {
   }
   async pushtoDatabase() {
     if (this.todolist) { 
-      const response = await this.apiService.Post('item', this.todolist);
+      const response = await this.apiService.Post('/todo', this.todolist);
       this.showModal = false;
     } else {
       console.log('name is null or empty');
