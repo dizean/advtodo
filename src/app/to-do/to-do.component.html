@@ -1,0 +1,55 @@
+<div class=''>
+<header class='bg-[#393E46] flex justify-between p-5 items-center'>
+<h1 class='text-3xl text-white'>
+  To Do Application v.2
+</h1>
+<button (click)="openModal()" class="bg-[#D65A31] text-[#EEEEEE] w-60 p-4 rounded-md">
+  Add new
+</button>
+</header>
+<main>
+<table class=" w-full text-left border-separate border-spacing-1 ">
+  <thead class="">
+    <th>
+      To do #
+    </th>
+    <th>
+      Owner
+    </th>
+    <th>
+      To do name
+    </th>
+    <th>
+      Action
+    </th>
+  </thead>
+  <tr>
+    <td>
+      1
+    </td>
+    <td>
+      Charles
+    </td>
+    <td>
+      Make Midterm
+    </td>
+    <td>
+      Save
+    </td>
+  </tr>
+</table>
+</main>
+
+
+
+<div *ngIf = "showModal" id="modal">
+  <form action="">
+    <label for="Owner">Owner</label>
+    <input type="text" name="owner" placeholder="Owner">
+    <label for="todo">To do</label>
+    <input type="text" name="todo" placeholder="Owner">
+    <button>Submit</button>
+    <button>Cancel</button>
+  </form>
+</div>
+</div>  
