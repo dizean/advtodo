@@ -17,3 +17,8 @@ model Todo {
   owner    String
   task     String
 }
+
+model Owner{
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  name    String
+}

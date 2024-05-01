@@ -1,95 +1,201 @@
 <div class=''>
-<header class='bg-[#393E46] flex justify-between p-5 items-center'>
-<h1 class='text-3xl text-white'>
-  To Do Application v.2
-</h1>
-<button (click)="openModal()" class="bg-[#D65A31] text-[#EEEEEE] w-60 p-4 rounded-md">
-  Add new
-</button>
-</header>
-<main>
-<table class=" w-full text-left border-separate border-spacing-1 ">
-  <thead class="">
-    <th>
-      To do #
-    </th>
-    <th>
-      Owner
-    </th>
-    <th>
-      To do name
-    </th>
-    <th>
-      Action
-    </th>
-  </thead>
-  <tr>
-    <td>
-      1
-    </td>
-    <td>
-      Charles
-    </td>
-    <td>
-      Make Midterm
-    </td>
-    <td>
-      Save
-    </td>
-  </tr>
-</table>
-<button (click)="showDBData()" class="bg-[#D65A31] text-[#EEEEEE] w-60 p-4 rounded-md">
- Database
-</button>
-<button (click)="showListData()" class="bg-[#D65A31] text-[#EEEEEE] w-60 p-4 rounded-md">
-  Array
-</button>
-</main>
-<!-- add modal -->
-<div 
-*ngIf = "showModal" 
-id="modal"
-[formGroup]="todo" 
-(ngSubmit)="pushItemtoList()">
-  <form action="">
-    <label for="Owner">Owner</label>
-    <input type="text" name="owner"  formControlName="owner" placeholder="Owner">
-    <label for="todo">To do</label>
-    <input type="text" name="task" formControlName="task" placeholder="Task">
-    <button type="submit">Submit</button>
-    <button>Cancel</button>
-  </form>
-</div>
+  <header class='bg-[#393E46] flex justify-between p-5 items-center'>
+  <h1 class='text-3xl text-white'>
+    To Do Application v.2
+  </h1>
+  <button (click)="openModal()" class="bg-[#D65A31] text-[#EEEEEE] w-60 p-4 rounded-md">
+   Show To do Form
+  </button>
+  <button (click)="showOwnerForm()" class="bg-[#D65A31] text-[#EEEEEE] w-60 p-4 rounded-md">
+    Show Owner Form
+  </button>
+  <button (click)="showListData()" class="bg-[#D65A31] text-[#EEEEEE] w-60 p-4 rounded-md">
+    Show Data in List
+  </button>
+  <button (click)="showDBData()" class="bg-[#D65A31] text-[#EEEEEE] w-60 p-4 rounded-md">
+   Show Data in DB
+  </button>
+  <button (click)="showOwnerlist()" class="bg-[#D65A31] text-[#EEEEEE] w-60 p-4 rounded-md">
+    Show Owner Databse
+   </button>
+   <button (click)="showOwners()" class="bg-[#D65A31] text-[#EEEEEE] w-60 p-4 rounded-md">
+    Show Owner List
+   </button>
+  </header>
+  <div 
+  *ngIf = "showModal" 
+  id="modal"
+  [formGroup]="todo" 
+  (ngSubmit)="pushItemtoList()">
+    <form action="">
+      <label for="Owner">Owner</label>
+      <input type="text" name="owner"  formControlName="owner" placeholder="Owner">
+      <label for="todo">To do</label>
+      <input type="text" name="task" formControlName="task" placeholder="Task">
+      <button type="submit">Submit</button>
+      <button>Cancel</button>
+    </form>
+  </div>
+  <div 
+  id="modal"
+  *ngIf = "OwnerForm" 
+  [formGroup]="owner" 
+  (ngSubmit)="pushOwnertoList()">
+    <form action="">
+      <label for="Owner">Owner</label>
+      <input type="text" name="name"  formControlName="name" placeholder="Owner">
+      <button type="submit">Submit</button>
+      <button>Cancel</button>
+    </form>
+  </div>
 
+  <div 
+  *ngIf = "showDatainDB" 
+  id="dbdata">
+  <div id="list-wrapper" class="bg-red-300 w-11/12 flex flex-wrap justify-center mx-auto my-0 p-4 gap-14">
+    @for (db of dblist; track db.id) {
+    <div id="lis-content" class="bg-blue-400 w-96 flex flex-col  m-0 rounded-xl">
+        <label for="name" class='text-5xl text-left w-11/12 mx-auto py-3'>Owner:</label>
+        <input 
+        name="owner" 
+        type="text" 
+        id="owner" 
+        (change)="onChange($event)"
+        class="bg-slate-100 h-10 p-8 flex items-center w-11/12 mx-auto my-2 rounded-lg text-2xl focus:outline-none" 
+        value="{{db.owner}}"/>
+        <label for="name" class='text-5xl text-left w-11/12 mx-auto py-3'>To do:</label>
+        <input 
+        name="task" 
+        type="text" 
+        id="task" 
+        (change)="onChange($event)"
+        class="bg-slate-100 h-10 p-8 flex items-center w-11/12 mx-auto my-2 rounded-lg text-2xl focus:outline-none" 
+        value="{{db.task}}"/>
+        <button 
+        class="bg-slate-100 w-11/12 p-4  mx-auto my-2 rounded-xl"
+        (click) = "updateItem(db.id)">'update'</button>
+        <button 
+        class="bg-slate-100 w-11/12 p-4  mx-auto my-2 rounded-xl"
+        (click) = "deleteItem(db.id)">'delete'</button>
+    </div>
+  } @empty {
+    <div id="lis-content" class="w-full m-0 rounded-sm">
+        <li class="text-3xl h-10 p-8 flex items-center justify-center mx-auto my-4">No Database Yet</li>
+   
+  </div>
+  }
+  </div> 
+  </div>
+
+  <div 
+  *ngIf = "showOwner" 
+  id="dbdata">
+  <div id="list-wrapper" class="bg-red-300 w-11/12 flex flex-wrap justify-center mx-auto my-0 p-4 gap-14">
+    @for (owner of ownerlist; track owner.id) {
+    <div id="lis-content" class="bg-blue-400 w-96 flex flex-col  m-0 rounded-xl">
+        <label for="name" class='text-5xl text-left w-11/12 mx-auto py-3'>To do:</label>
+        <input 
+        name="owner" 
+        type="text" 
+        id="owner" 
+        (change)="onChange($event)"
+        class="bg-slate-100 h-10 p-8 flex items-center w-11/12 mx-auto my-2 rounded-lg text-2xl focus:outline-none" 
+        value="{{owner.owner}}"/>
+        <button 
+        class="bg-slate-100 w-11/12 p-4  mx-auto my-2 rounded-xl"
+        (click) = "createOwner(owner)">'update'</button>
+        <button 
+        class="bg-slate-100 w-11/12 p-4  mx-auto my-2 rounded-xl"
+        (click) = "deleteItem(owner.id)">'delete'</button>
+    </div>
+  } @empty {
+    <div id="lis-content" class="w-full m-0 rounded-sm">
+        <li class="text-3xl h-10 p-8 flex items-center justify-center mx-auto my-4">No Database Yet</li>
+   
+  </div>
+  }
+  </div> 
+  </div>
+
+  <div 
+  *ngIf = "showDatainList" 
+  id="arraydata">
+  <div id="list-wrapper" class="bg-red-300 w-11/12 flex flex-wrap justify-center mx-auto my-0 p-4 gap-14">
+    @for (todo of todolist; track todo.id) {
+    <div id="lis-content" class="bg-blue-400 w-96 flex flex-col  m-0 rounded-xl">
+        <label for="name" class='text-5xl text-left w-11/12 mx-auto py-3'>Owner:</label>
+        <input 
+        name="owner" 
+        type="text" 
+        id="name" 
+        class="bg-slate-100 h-10 p-8 flex items-center w-11/12 mx-auto my-2 rounded-lg text-2xl focus:outline-none" 
+        value="{{todo.owner}}"/>
+        <label for="name" class='text-5xl text-left w-11/12 mx-auto py-3'>Owner:</label>
+        <input 
+        name="task" 
+        type="text" 
+        id="task" 
+        class="bg-slate-100 h-10 p-8 flex items-center w-11/12 mx-auto my-2 rounded-lg text-2xl focus:outline-none" 
+        value="{{todo.task}}"/>
+        <button (click)="pushToDatabase()">Push to Database</button>
+        <button (click)="pushItemtoDatabase(todo)">Get item id</button>
+        
+        
+    </div>
+  } @empty {
+    <div id="lis-content" class="w-full m-0 rounded-sm">
+        <li class="text-3xl h-10 p-8 flex items-center justify-center mx-auto my-4">No Array Yet</li>
+   
+  </div>
+  }
+  </div> 
+  </div>
+</div>  
 <!-- show data in db -->
 <div 
-*ngIf = "showDatainDB" 
+*ngIf = "ownerList" 
 id="dbdata">
 <div id="list-wrapper" class="bg-red-300 w-11/12 flex flex-wrap justify-center mx-auto my-0 p-4 gap-14">
-  @for (db of dblist; track db.id) {
+  @for (owner of ownerdb; track owner.id) {
   <div id="lis-content" class="bg-blue-400 w-96 flex flex-col  m-0 rounded-xl">
       <label for="name" class='text-5xl text-left w-11/12 mx-auto py-3'>Owner:</label>
+      <input 
+      name="id" 
+      type="text" 
+      id="id" 
+      (change)="onChange($event)"
+      class="bg-slate-100 h-10 p-8 flex items-center w-11/12 mx-auto my-2 rounded-lg text-2xl focus:outline-none" 
+      value="{{owner.id}}"/>
+      <label for="name" class='text-5xl text-left w-11/12 mx-auto py-3'>To do:</label>
       <input 
       name="owner" 
       type="text" 
       id="owner" 
       (change)="onChange($event)"
       class="bg-slate-100 h-10 p-8 flex items-center w-11/12 mx-auto my-2 rounded-lg text-2xl focus:outline-none" 
-      value="{{db.owner}}"/>
-      <label for="name" class='text-5xl text-left w-11/12 mx-auto py-3'>To do:</label>
-      <input 
-      name="task" 
-      type="text" 
-      id="task" 
-      (change)="onChange($event)"
-      class="bg-slate-100 h-10 p-8 flex items-center w-11/12 mx-auto my-2 rounded-lg text-2xl focus:outline-none" 
-      value="{{db.task}}"/>
+      value="{{owner.name}}"/>
       <button 
       class="bg-slate-100 w-11/12 p-4  mx-auto my-2 rounded-xl"
-      (click) = "updateItem(db.id)">'update'</button>
+      (click) = "showTaskofOwner(owner.id)">'add new task'</button>
       <button 
       class="bg-slate-100 w-11/12 p-4  mx-auto my-2 rounded-xl"
-      (click) = "deleteItem(db.id)">'delete'</button>
+      (click) = "showUserTask(owner.id)">'show my tasks'</button>
+      <div *ngIf = "showItems" >
+        @for (ownertask of owneritems; track ownertask.id) {
+          <label for="name" class='text-5xl text-left w-11/12 mx-auto py-3'>Owner:</label>
+          <input 
+          name="id" 
+          type="text" 
+          id="id" 
+          (change)="onChange($event)"
+          class="bg-slate-100 h-10 p-8 flex items-center w-11/12 mx-auto my-2 rounded-lg text-2xl focus:outline-none" 
+          value="{{ownertask.task}}"/>
+        }
+      </div>
+     
+      <button 
+      class="bg-slate-100 w-11/12 p-4  mx-auto my-2 rounded-xl"
+      (click) = "deleteItem(owner.id)">'delete'</button>
   </div>
 } @empty {
   <div id="lis-content" class="w-full m-0 rounded-sm">
@@ -98,45 +204,36 @@ id="dbdata">
 </div>
 }
 </div> 
-</div>
-
-<!-- show data in array -->
 <div 
-*ngIf = "showDatainList" 
-id="arraydata">
+*ngIf = "selectedOwner" 
+id="dbdata">
 <div id="list-wrapper" class="bg-red-300 w-11/12 flex flex-wrap justify-center mx-auto my-0 p-4 gap-14">
-  @for (todo of todolist; track todo.id) {
+  @for (owner of ownerdb; track owner.id) {
   <div id="lis-content" class="bg-blue-400 w-96 flex flex-col  m-0 rounded-xl">
-      <label for="name" class='text-5xl text-left w-11/12 mx-auto py-3'>Owner:</label>
-      <input 
-      name="owner" 
-      type="text" 
-      id="name" 
-      class="bg-slate-100 h-10 p-8 flex items-center w-11/12 mx-auto my-2 rounded-lg text-2xl focus:outline-none" 
-      value="{{todo.owner}}"/>
-      <label for="name" class='text-5xl text-left w-11/12 mx-auto py-3'>To do:</label>
-      <input 
-      name="task" 
-      type="text" 
-      id="name" 
-      class="bg-slate-100 h-10 p-8 flex items-center w-11/12 mx-auto my-2 rounded-lg text-2xl focus:outline-none" 
-      value="{{todo.task}}"/>
-      <button (click)="pushToDatabase()">Push to Database</button>
-      <button (click)="pushItemtoDatabase(todo)">Get item id</button>
-      
-      
+    User Profile
+      <h1>{{owner.name}}</h1>
+      <h1>{{owner.id}}</h1>
+      <button (click)="openModal()"> Add new</button>
   </div>
 } @empty {
   <div id="lis-content" class="w-full m-0 rounded-sm">
-      <li class="text-3xl h-10 p-8 flex items-center justify-center mx-auto my-4">No Array Yet</li>
+      <li class="text-3xl h-10 p-8 flex items-center justify-center mx-auto my-4">No Database Yet</li>
  
 </div>
 }
+<div 
+  *ngIf = "showModal" 
+  id="modal"
+  [formGroup]="todo" 
+  (ngSubmit)="pushItemtoList()">
+    <form action="">
+      <label for="todo">To do</label>
+      <input type="text" name="task" formControlName="task" placeholder="Task">
+      <button type="submit">Submit</button>
+      <button>Cancel</button>
+    </form>
+  </div>
 </div> 
+
 </div>
-
-
-
-<!-- <button (click)="AllData()">Show</button> -->
-
-</div>  
+</div>

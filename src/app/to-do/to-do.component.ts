@@ -10,6 +10,19 @@ import { ServicesService } from 'src/services/services.service';
   styleUrl: './to-do.component.css'
 })
 export class ToDOComponent {
+  constructor(public apiService :ServicesService){}
+   //todolist static,empty when reload
+   todolist: any[] = []
+   //dblist data from mongodbcompass
+   dblist: any[] = []
+   ownerlist: any[] = []
+   ownerdb: any[] = []
+ 
+   //displayalldata
+   ngOnInit(): void {
+     this.AllData();
+     this.Owner();
+   }
   //modal for adding Tasks
   showModal = false
   openModal(){
@@ -25,30 +38,64 @@ export class ToDOComponent {
   showListData(){
     this.showDatainList = !this.showDatainList
   }
+  OwnerForm = false;
+  showOwnerForm(){
+    this.OwnerForm = !this.OwnerForm
+  }
+  ownerList = false
+  showOwnerlist(){
+    this.ownerList = !this.ownerList
+  }
 
-  constructor(public apiService :ServicesService){}
+  showOwner = false;
+  showOwners(){
+    this.showOwner = !this.showOwner
+  }
+  showItems = false;
+  ownerItemlist: any[] = []
+  selectedOwner = false
+  ownerId = '';
+  showTaskofOwner(id: string){
+    this.ownerId = id;
+    this.selectedOwner = !this.selectedOwner
+    console.log(this.owneritems)
+    this.ownerItems();
+  }
+  showUserTask(id: string){
+    this.ownerId = id;
+    this.showItems = !this.showItems
+  }
+
+  
 //formgroup get owner and task put in state
   todo = new FormGroup({
     owner : new FormControl('', Validators.required),
     task : new FormControl('', Validators.required)
   })
-  //todolist static,empty when reload
-  todolist: any[] = []
-  //dblist data from mongodbcompass
-  dblist: any[] = []
 
-  //displayalldata
-  ngOnInit(): void {
-    this.AllData();
-  }
+  owner = new FormGroup({
+    name : new FormControl('', Validators.required)
+  })
+
+ 
   async AllData(): Promise<any>  {
     const response = await this.apiService.GetAllData('todo', 'display');
     this.dblist = response.data;
-    console.log(this.dblist);
   }
-  //push item to todolist
+  async Owner(): Promise<any>  {
+    const response = await this.apiService.GetOwner('owner', 'display');
+    this.ownerdb = response.data;
+  }
+  owneritems: any[] =[]
+  async ownerItems(): Promise<any> {
+    const response = await this.apiService.GetAllData('todo', 'display');
+    const filteredItems = response.data.filter((item:any) => item.owner === this.ownerId);
+    this.owneritems = filteredItems;
+  }
+
+//push item to todolist
   async pushItemtoList() {
-    const owner = this.todo.get('owner')?.value; 
+    const owner = this.ownerId;
     const task = this.todo.get('task')?.value; 
     const nameStore = {owner, task};
     if (nameStore) { 
@@ -62,10 +109,23 @@ export class ToDOComponent {
       console.log('name is null or empty');
     }
   }
+  async pushOwnertoList() {
+    const owner = this.owner.get('name')?.value; 
+    const user = {owner};
+    if (owner) { 
+      this.ownerlist.push(user);
+      this.owner.setValue({
+        name:''
+      })
+      this.showModal = false;
+      console.log(this.ownerlist);
+    } else {
+      console.log('name is null or empty');
+    }
+  }
   showList (){
     console.log(this.todolist);
   }
-
   //push all data in todolist to database
   async pushToDatabase() {
     if (this.todolist.length === 0) {
@@ -148,4 +208,21 @@ async deleteItem(itemid: string) {
   }
   
 }
+
+async createOwner(owner: any[]){
+  console.log(owner);
+  const user = owner
+  try {
+    const response = await this.apiService.PostOwner('owner', 'createowner', user);
+    if (response) { 
+      console.log('Items pushed successfully');
+
+    } else {
+      console.error('Error pushing to database:', response);
+    }
+  } catch (error) {
+    console.error('Error pushing to database:', error);
+  }
+
+ }
 }

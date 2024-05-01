@@ -28,4 +28,11 @@ export class ServicesService {
   async Delete(module:string, action:string, todoid:any){
     return axios.delete(`http://localhost:8080/${module}/${action}/${todoid}`)
   }
+
+  async PostOwner(module: string, action: string, name: any[]) {
+    return axios.post(`http://localhost:8080/${module}/${action}`, name);
+  }
+  GetOwner(module:string, action: string){
+    return axios.get(`http://localhost:8080/${module}/${action}`)
+  }
 }
