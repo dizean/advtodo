@@ -38,10 +38,14 @@
     </td>
   </tr>
 </table>
+<button (click)="showDBData()" class="bg-[#D65A31] text-[#EEEEEE] w-60 p-4 rounded-md">
+ Database
+</button>
+<button (click)="showListData()" class="bg-[#D65A31] text-[#EEEEEE] w-60 p-4 rounded-md">
+  Array
+</button>
 </main>
-
-
-
+<!-- add modal -->
 <div 
 *ngIf = "showModal" 
 id="modal"
@@ -56,10 +60,53 @@ id="modal"
     <button>Cancel</button>
   </form>
 </div>
+
+<!-- show data in db -->
+<div 
+*ngIf = "showDatainDB" 
+id="dbdata">
+<div id="list-wrapper" class="bg-red-300 w-11/12 flex flex-wrap justify-center mx-auto my-0 p-4 gap-14">
+  @for (db of dblist; track db.id) {
+  <div id="lis-content" class="bg-blue-400 w-96 flex flex-col  m-0 rounded-xl">
+      <label for="name" class='text-5xl text-left w-11/12 mx-auto py-3'>Owner:</label>
+      <input 
+      name="owner" 
+      type="text" 
+      id="owner" 
+      (change)="onChange($event)"
+      class="bg-slate-100 h-10 p-8 flex items-center w-11/12 mx-auto my-2 rounded-lg text-2xl focus:outline-none" 
+      value="{{db.owner}}"/>
+      <label for="name" class='text-5xl text-left w-11/12 mx-auto py-3'>To do:</label>
+      <input 
+      name="task" 
+      type="text" 
+      id="task" 
+      (change)="onChange($event)"
+      class="bg-slate-100 h-10 p-8 flex items-center w-11/12 mx-auto my-2 rounded-lg text-2xl focus:outline-none" 
+      value="{{db.task}}"/>
+      <button 
+      class="bg-slate-100 w-11/12 p-4  mx-auto my-2 rounded-xl"
+      (click) = "updateItem(db.id)">'update'</button>
+      <button 
+      class="bg-slate-100 w-11/12 p-4  mx-auto my-2 rounded-xl"
+      (click) = "deleteItem(db.id)">'delete'</button>
+  </div>
+} @empty {
+  <div id="lis-content" class="w-full m-0 rounded-sm">
+      <li class="text-3xl h-10 p-8 flex items-center justify-center mx-auto my-4">No Database Yet</li>
+ 
+</div>
+}
+</div> 
+</div>
+
+<!-- show data in array -->
+<div 
+*ngIf = "showDatainList" 
+id="arraydata">
 <div id="list-wrapper" class="bg-red-300 w-11/12 flex flex-wrap justify-center mx-auto my-0 p-4 gap-14">
   @for (todo of todolist; track todo.id) {
   <div id="lis-content" class="bg-blue-400 w-96 flex flex-col  m-0 rounded-xl">
-      <!-- <li class="bg-slate-100 h-10 p-8 flex items-center w-11/12 mx-auto my-2 rounded-lg text-2xl">{{todo.id}}</li>  -->
       <label for="name" class='text-5xl text-left w-11/12 mx-auto py-3'>Owner:</label>
       <input 
       name="owner" 
@@ -75,12 +122,21 @@ id="modal"
       class="bg-slate-100 h-10 p-8 flex items-center w-11/12 mx-auto my-2 rounded-lg text-2xl focus:outline-none" 
       value="{{todo.task}}"/>
       <button (click)="pushToDatabase()">Push to Database</button>
+      <button (click)="pushItemtoDatabase(todo)">Get item id</button>
+      
+      
   </div>
 } @empty {
   <div id="lis-content" class="w-full m-0 rounded-sm">
-      <li class="text-3xl h-10 p-8 flex items-center justify-center mx-auto my-4">No Plans Yet</li>
+      <li class="text-3xl h-10 p-8 flex items-center justify-center mx-auto my-4">No Array Yet</li>
  
 </div>
 }
 </div> 
+</div>
+
+
+
+<!-- <button (click)="AllData()">Show</button> -->
+
 </div>  

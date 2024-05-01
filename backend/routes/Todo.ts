@@ -1,10 +1,15 @@
-const express = require('express')
-const router = express.Router();
-import TodoController from "../controllers/Todocontroller";
-
-router.route("/create").post(TodoController.CreateList);
+    const express = require('express')
+    const router = express.Router();
+    import TodoController from "../controllers/Todocontroller";
 
 
-const TodoRouter = router;
+    router.route("/display").get(TodoController.GetAllData);
+    router.route("/pushList").post(TodoController.pushAlltoDB);
+    router.route("/pushTodo").post(TodoController.pushSelectedTodotoDB);
+    router.route("/update/:id").put(TodoController.updateTodo); 
+    router.route("/delete/:id").delete(TodoController.deleteTodo); 
 
-export default TodoRouter;
+
+    const TodoRouter = router;
+
+    export default TodoRouter;
