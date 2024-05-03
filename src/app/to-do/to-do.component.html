@@ -1,6 +1,4 @@
-<div
-*ngIf = "hideOnselectOwner"
-class="selectowner">
+<div *ngIf = "hideOnselectOwner" class="selectowner">
 <div class="flex flex-col gap-4">
 <label for="owners" class="text-3xl font-medium text-gray-900">Select an owner</label>
 <select name="owners"  id="owners" (change) = "getownerId($event)"
@@ -30,8 +28,10 @@ class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:
     
   </div>
 </div>
-</div> 
+</div>
+
 <div id="container">
+
 <div class="sidebar" *ngIf = "showOnselectOwner">
   <div class="top">
     <h1 class="" *ngIf="ownername">
@@ -46,6 +46,7 @@ class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:
     <a class="actionbtn"  (click) = "selectanotherOwner()">Select another owner</a>
   </div>
 </div>
+
 <!-- saved tasks -->
 <div class="savedtasks" *ngIf = "showDatainDB">
 <div class="title">Saved Tasks</div>
@@ -74,6 +75,7 @@ class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:
     }
 </div>
 </div>
+
 <!-- form add task -->
 <div 
   class="addtask"
@@ -91,6 +93,7 @@ class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:
       </div>
     </form>
 </div>
+
 <!-- unsavedtask -->
 <div 
   *ngIf = "showDatainList" 
@@ -125,6 +128,7 @@ class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:
   </div> 
   <button (click)="pushToDatabase()">Save All</button>
   </div>
+
 <!-- update owner -->
 <div class="addtask " *ngIf = "showUpdate">
   <form >
@@ -142,4 +146,5 @@ class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:
     </div>
   </form>
 </div>
+
 </div>

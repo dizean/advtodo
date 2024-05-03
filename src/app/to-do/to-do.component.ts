@@ -12,14 +12,16 @@ import { ServicesService } from 'src/services/services.service';
 })
 export class ToDOComponent {
   constructor(public apiService :ServicesService){}
-   todolist: any[] = []
-   dblist: any[] = []
-   ownerlist: any[] = []
+   todolist: any[] = [] //list for unsaved tasks
+   dblist: any[] = [] //list for saved tasks
    ownerdb: any[] = []
+   //retrive db data on load
    ngOnInit(): void {
      this.AllData();
      this.Owner();
    }
+
+   //function for hiding/displaying creating task
   showModal = false
   hideTasks = true;
   openModal(){
@@ -28,9 +30,11 @@ export class ToDOComponent {
     this.showDatainList = false;
     this.showUpdate = false;
   }
+  //close owner form
   closeModal(){
     this.OwnerForm = false
   }
+   //function for hiding/displaying div for saving task to db
   showDatainDB = true
   showDBData(){
     this.showDatainDB = true
@@ -38,6 +42,8 @@ export class ToDOComponent {
     this.showModal = false;
     this.showUpdate = false;
   }
+
+   //function for hiding/displaying list of unsaved data
   showDatainList = false
   showListData(){
     this.showDatainList = true
@@ -45,48 +51,33 @@ export class ToDOComponent {
     this.showModal = false;
     this.showUpdate = false;
   }
+   //function for hiding/displaying owner form
   OwnerForm = false;
   showOwnerForm(){
     this.OwnerForm = !this.OwnerForm
   }
-  ownerList = false
-  showOwnerlist(){
-    this.ownerList = !this.ownerList
-  }
-  showOwner = false;
-  showOwners(){
-    this.showOwner = !this.showOwner
-  }
+   //function for hiding/displaying creating task
   showItems = false;
   ownerItemlist: any[] = []
   selectedOwner = false
   ownerId = '';
-  showTaskofOwner(id: string){
-    this.ownerId = id;
-    this.selectedOwner = !this.selectedOwner
-    console.log(this.owneritems)
-    this.ownerItems();
-  }
-  showUserTask(id: string){
-    this.ownerId = id;
-    this.showItems = !this.showItems
-  }
+
+  //handles inputs in form
   todo = new FormGroup({
     owner : new FormControl('', Validators.required),
     task : new FormControl('', Validators.required)
   })
-
   owner = new FormGroup({
     name : new FormControl('', Validators.required)
   })
+
   hideOnselectOwner = true;
   showOnselectOwner = false;
-  showDashowner = false
   ownername = '';
   ownerItemList: any[] = [];
+  //function to get owner by id and to show tasks associated with the owner
   getownerId($event: any){
     this.ownerItems();
-    console.log('selection changed');
     const selectedOption = $event.target;
     const selectedid = selectedOption.value;
     this.ownerId = selectedid;
@@ -97,49 +88,26 @@ export class ToDOComponent {
     this.ownerItemList = filteredArray;
     const ownerName = owner.name;
     this.ownername = ownerName;
-    console.log(this.ownername);
-    console.log(this.ownerId);
-    this.showDashowner = !this.showDashowner;
-    console.log(this.owneritems)
   }
- 
+ //get item data
   async AllData(): Promise<any>  {
     const response = await this.apiService.GetAllData('todo', 'display');
     this.dblist = response.data;
   }
-  
+  //get owner data
   async Owner(): Promise<any>  {
     const response = await this.apiService.GetOwner('owner', 'display');
     this.ownerdb = response.data;
     console.log(this.ownerdb)
   }
+  //get all item data that is associated with owner id and push into owneritems
   owneritems: any[] =[]
   async ownerItems(): Promise<any> {
     const response = await this.apiService.GetAllData('todo', 'display');
     const filteredItems = response.data.filter((item:any) => item.owner === this.ownerId);
     this.owneritems = filteredItems;
   }
-
-  async getOwnerName() {
-    try {
-      if (!this.ownerId) {
-        throw new Error('ownerId cannot be empty');
-      }
-      const response = await this.apiService.GetOwner('owner', 'display');
-      const owner = this.dblist.find((owner:any) => owner.id === this.ownerId);
-      if (!owner) {
-        console.warn(`Owner with ID "${this.ownerId}" not found`);
-        return;
-      }
-      const ownerName = owner.name; 
-      this.ownername = ownerName;
-      console.log(`Owner name retrieved: ${ownerName}`);
-    } catch (error) {
-      console.error('Error retrieving owner name:', error);
-    }
-  }
- 
-
+  //close the dashboard like div and go back to selecting owner
   selectanotherOwner(){
     this.showOnselectOwner = !this.showOnselectOwner;
     this.hideOnselectOwner = !this.hideOnselectOwner;
@@ -159,20 +127,6 @@ export class ToDOComponent {
       const filteredArray = this.todolist.filter(item => item.owner === this.ownerId);
       this.ownerItemList = filteredArray;
       console.log(this.todolist)
-    } else {
-      console.log('name is null or empty');
-    }
-  }
-  async pushOwnertoList() {
-    const owner = this.owner.get('name')?.value; 
-    const user = {owner};
-    if (owner) { 
-      this.ownerlist.push(user);
-      this.owner.setValue({
-        name:''
-      })
-      this.showModal = false;
-      console.log(this.ownerlist);
     } else {
       console.log('name is null or empty');
     }
@@ -216,10 +170,13 @@ export class ToDOComponent {
  }
 
  //updateselectedtodo
+ //create new list for taking new values of task and owner
+ //but the owner value here will be owner id
 newList = ({
  Owner : '',
  Task: ''
 })
+//get new values every input event to be used in updating
 onChange(event: Event) {
   const input = event.target as HTMLInputElement;
   if (input.name === 'task') {
@@ -227,7 +184,7 @@ onChange(event: Event) {
   }
   console.log('Input value changed:', this.newList);
 }
-
+//update item using id
 async updateItem(todoid: string) {
   console.log(todoid);
   const selectedTodo = {
@@ -243,6 +200,7 @@ async updateItem(todoid: string) {
   }
 
 }
+//delete item by id
 async deleteItem(itemid: string) {
   try{
     const deleteItEM = await this.apiService.Delete('todo','delete',itemid)
@@ -254,6 +212,7 @@ async deleteItem(itemid: string) {
   }
   
 }
+//create new owner
 async createOwner(){
   const name = this.owner.get('name')?.value; 
   const nameStore = {name: name};
@@ -272,9 +231,11 @@ async createOwner(){
   }
 
  }
+ //new list for getting new values to be used in updating
  newName = ({
   Name : this.ownername
  })
+ //update owner
 updateOwner(event: Event) {
   const input = event.target as HTMLInputElement;
   if (input.name === 'owner') {
@@ -282,6 +243,7 @@ updateOwner(event: Event) {
   }
   console.log('Input value changed:', this.newName);
 }
+//show UProfile to be able to update
 showUpdate = false;
 showProfile(){
   this.showUpdate = true;
@@ -290,6 +252,7 @@ showProfile(){
   this.showDatainList = false;
 
 }
+//update owner account
  async updateAccount(id: string){
   const theName = ({
     name : this.newName.Name
@@ -305,6 +268,7 @@ showProfile(){
     console.error('Error updating item:', error);
   }
  }
+ //delete tasks associated with ownerid
  async deleteAccItem(ownerid: string){
   try {
     const owneriTEMSdelete = await this.apiService.DeleteOwnerTasks('todo', 'deleteowner', ownerid);
@@ -313,6 +277,7 @@ showProfile(){
     console.error('Error deleting item:', error);
   }
  }
+ //delete owner , call delete task inside so that two process will be done in one function
  async deleteAccount(ownerid: string) {
   try {
     this.deleteAccItem(ownerid);
