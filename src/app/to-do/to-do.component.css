@@ -119,9 +119,3 @@ button{
 .unsavedtasks label{
     @apply text-[2rem] w-full
 }
-/* .unsavedtasks .task{
-    @apply h-[450px] 
-}
-.unsavedtasks input{
-    @apply h-24
-} */
