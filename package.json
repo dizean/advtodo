@@ -1,8 +1,10 @@
 {
   "devDependencies": {
+    "@angular-devkit/build-angular": "^17.3.6",
     "@angular/cli": "^17.3.6"
   },
   "dependencies": {
-    "@angular-devkit/build-angular": "^17.3.6"
+    "typescript": "^5.4.5",
+    "zone.js": "^0.14.5"
   }
 }
