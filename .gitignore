@@ -28,7 +28,7 @@ yarn-error.log
 !.vscode/extensions.json
 .history/*
 
-# Miscellaneous
+# Miscellaneouss
 /.angular/cache
 .sass-cache/
 /connect.lock
@@ -42,3 +42,4 @@ testem.log
 Thumbs.db
 .vercel
 .angular
+src
