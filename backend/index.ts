@@ -1,4 +1,4 @@
-import express from 'express'
+import express from 'express';
 import TodoRouter from './routes/Todo';
 import OwnerRoute from './routes/Owner';
 const cors = require('cors');
