@@ -2,6 +2,8 @@ import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 
 const prisma = new PrismaClient();
+
+//retrieve all Item data
 async function GetAllData(req: Request, res: Response) {
   try {
     const data = await prisma.todo.findMany();
@@ -11,6 +13,7 @@ async function GetAllData(req: Request, res: Response) {
     return res.status(500).json({ message: 'Internal Server Error' });
   }
 }
+//push all unsaved data to database
 async function pushAlltoDB(req: Request, res: Response) {
     try {
         const todos = req.body;
@@ -30,6 +33,7 @@ async function pushAlltoDB(req: Request, res: Response) {
         res.status(500).json({ message: 'Error creating todos', error });
     }
 }
+//push only selected item to database
 async function pushSelectedTodotoDB(req: Request, res: Response) {
     try {
         const owner = req.body;
@@ -46,6 +50,7 @@ async function pushSelectedTodotoDB(req: Request, res: Response) {
         res.status(500).json({ message: 'Error creating todos', error });
     }
 }
+//update by id
 async function updateTodo(req: Request, res: Response) {
     const todoId = req.params.id;
     const selectedTodo = req.body;
@@ -65,6 +70,7 @@ async function updateTodo(req: Request, res: Response) {
       return res.status(500).json({ message: 'Error updating todo', error });
     }
   }
+  //delete by id
 async function  deleteTodo(req: Request, res: Response) {
     const todoid = req.params.id;
     try{
@@ -81,6 +87,7 @@ async function  deleteTodo(req: Request, res: Response) {
         res.status(500).json({ message: 'Error creating todos', error });
     }
 }
+//delete items associated with ownerid
 async function  deleteTodobyOwner(req: Request, res: Response) {
   const ownerId = req.params.ownerId;
   try{
@@ -95,7 +102,7 @@ async function  deleteTodobyOwner(req: Request, res: Response) {
       res.status(500).json({ message: 'Error creating todos', error });
   }
 }
-
+//put in list for export
 const TodoController = { pushAlltoDB,pushSelectedTodotoDB, GetAllData, updateTodo , deleteTodo, deleteTodobyOwner};
 
 export default TodoController;

@@ -2,6 +2,8 @@ import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 
 const prisma = new PrismaClient();
+
+//create new owner request name
 async function createOwner(req: Request, res: Response) {
     try {
         const {name} = req.body;
@@ -17,6 +19,7 @@ async function createOwner(req: Request, res: Response) {
         res.status(500).json({ message: 'Error creating todos', error });
     }
 }
+//retrieve all data
 async function getOwnerData(req: Request, res: Response) {
     try {
       const data = await prisma.owner.findMany();
@@ -26,7 +29,7 @@ async function getOwnerData(req: Request, res: Response) {
       return res.status(500).json({ message: 'Internal Server Error' });
     }
   }
-
+//update owner request id and name
   async function updateOwner(req: Request, res: Response) {
     const ownerid = req.params.id;
     const  name  = req.body;
@@ -45,7 +48,7 @@ async function getOwnerData(req: Request, res: Response) {
       return res.status(500).json({ message: 'Error updating owner', error });
     }
   }
-
+//delete owner by id
   async function  deleteOwner(req: Request, res: Response) {
     const todoid = req.params.id;
     try{
@@ -62,6 +65,7 @@ async function getOwnerData(req: Request, res: Response) {
         res.status(500).json({ message: 'Error deleting owner', error });
     }
 }
+//put in a list for export
 const OwnerController = { createOwner, getOwnerData , updateOwner, deleteOwner};
 
 export default OwnerController;

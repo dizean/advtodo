@@ -10,8 +10,8 @@ const app = express()
 app.use(cors());
 app.use(bodyParser.json());
 
-app.use('/todo',TodoRouter);
-app.use('/owner',OwnerRoute);
+app.use('/todo',TodoRouter); // route for todo items
+app.use('/owner',OwnerRoute); //route for owners
 
 app.listen(PORT, () => {
   console.log(`Listening on port http://localhost:${PORT}`);
