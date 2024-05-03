@@ -1,6 +1,127 @@
-thead{
-    @apply text-xl gap-4
+.selectowner{
+    @apply flex flex-col items-center justify-center h-screen
+    bg-[#4F4A45] gap-y-3
 }
-th{
-    @apply p-2 bg-blue-200
+.selectowner option, .createowner{
+    @apply text-[#F6F1EE] bg-[#4F4A45]
 }
+.selectowner label{
+    @apply w-full text-[#F6F1EE]
+}
+.selectowner select{
+    @apply text-xl h-16
+}
+.selectowner option{
+    @apply text-xl
+}
+#ownerForm{
+    @apply w-screen h-screen
+    fixed top-0 left-0 flex flex-col justify-center items-center
+}
+#ownerForm form{
+    @apply w-3/12 p-3 bg-[#6C5F5B] flex flex-col rounded-xl items-center justify-center
+}
+#ownerForm form label{
+    @apply px-5 text-3xl py-2 
+}
+#ownerForm form input{
+    @apply bg-none py-5 px-3  rounded-md text-[#4F4A45] focus:outline-none
+}
+#ownerForm form h1{
+    @apply text-5xl py-6 px-3 
+}
+#ownerForm form button{
+    @apply w-full mx-auto text-xl py-5 px-3 bg-[#ED7D31] rounded-lg 
+}
+#ownerForm form h1, input, label, .btn{
+    @apply w-11/12 mx-auto
+}
+#ownerForm .btn{
+    @apply flex flex-col gap-y-3 py-4 
+}
+
+#container{
+    @apply w-full  bg-blue-300 flex
+}
+#container .sidebar{
+    @apply w-1/6 flex flex-col p-5 h-screen bg-[#4F4A45] justify-between sticky top-0
+}
+.sidebar h1{
+    @apply text-3xl cursor-default py-5 border-b-4
+}
+.sidebar .top{
+    @apply flex flex-col gap-y-16 text-white
+}
+.sidebar a{
+    @apply text-xl cursor-pointer
+}
+.sidebar .bottom{
+    @apply text-white pt-5 border-t-4
+}
+.savedtasks{
+    @apply w-5/6 flex flex-col bg-[#F6F1EE] h-fit
+}
+.title{
+    @apply text-5xl p-5 
+}
+.title,.savedtasks h1, .savedtasks input{
+ @apply text-[#4F4A45]
+}
+.task-container{
+    @apply  p-5 flex flex-wrap gap-x-10 gap-y-4 
+}
+.task-container .task{
+    @apply bg-[#FAF6F0] w-[350px] h-[400px] rounded-lg p-3 flex gap-y-2 flex-col
+   border border-[#4F4A45]
+}
+.task h1{
+    @apply text-[3rem] border-b-4 border-[#6C5F5B]
+}
+.task input{
+    @apply bg-[#F4DFC8] w-full  pl-3 h-40 rounded-lg focus:outline-none
+}
+.t-btn{
+    @apply flex flex-col gap-y-2 py-2
+}
+.t-btn button{
+    @apply w-full mx-auto text-xl py-4 px-3 bg-[#ED7D31] rounded-lg text-white border border-[#ED7D31]
+}
+button{
+    @apply  hover:bg-white hover:text-[#ED7D31] transition-all ease-in-out
+}
+.addtask{
+    @apply w-5/6 flex flex-col justify-center items-center
+}
+.addtask form{
+    @apply w-3/12 p-3 bg-[#6C5F5B] flex flex-col rounded-xl items-center justify-center
+}
+.addtask form label{
+    @apply  text-3xl py-2 text-white
+}
+.addtask form input{
+    @apply bg-none py-5 px-3  rounded-md text-[#4F4A45] focus:outline-none mt-5
+}
+.addtask form h1{
+    @apply text-5xl py-6  text-white border-b-4
+}
+.addtask form button{
+    @apply w-full mx-auto text-xl py-5 px-3 bg-[#ED7D31] rounded-lg  text-white
+}
+.addtask form h1, input, label, .btn{
+    @apply w-11/12 mx-auto
+}
+.addtask .btn{
+    @apply flex flex-col gap-y-3 py-4 
+}
+.unsavedtasks{
+    @apply w-5/6 flex flex-col bg-[#F6F1EE] h-full
+}
+.unsavedtasks label{
+    @apply text-[2rem] w-full
+}
+/* .unsavedtasks .task{
+    @apply h-[450px] 
+}
+.unsavedtasks input{
+    @apply h-24
+} */

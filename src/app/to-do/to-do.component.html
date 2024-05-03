@@ -1,146 +1,120 @@
-<div class=''>
-  <header class='bg-[#393E46] flex justify-between p-5 items-center'>
-  <h1 class='text-3xl text-white'>
-    To Do Application v.2
-  </h1>
-  <button (click)="openModal()" class="bg-[#D65A31] text-[#EEEEEE] w-60 p-4 rounded-md">
-   Show To do Form
-  </button>
-  <button (click)="showOwnerForm()" class="bg-[#D65A31] text-[#EEEEEE] w-60 p-4 rounded-md">
-    Show Owner Form
-  </button>
-  <button (click)="showListData()" class="bg-[#D65A31] text-[#EEEEEE] w-60 p-4 rounded-md">
-    Show Data in List
-  </button>
-  <button (click)="showDBData()" class="bg-[#D65A31] text-[#EEEEEE] w-60 p-4 rounded-md">
-   Show Data in DB
-  </button>
-  <button (click)="showOwnerlist()" class="bg-[#D65A31] text-[#EEEEEE] w-60 p-4 rounded-md">
-    Show Owner Databse
-   </button>
-   <button (click)="showOwners()" class="bg-[#D65A31] text-[#EEEEEE] w-60 p-4 rounded-md">
-    Show Owner List
-   </button>
-  </header>
+<div
+*ngIf = "hideOnselectOwner"
+class="selectowner">
+<div class="flex flex-col gap-4">
+<label for="owners" class="text-3xl font-medium text-gray-900">Select an owner</label>
+<select name="owners"  id="owners" (change) = "getownerId($event)"
+class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none block h-12"
+>
+  <option value="" >Select an owner</option>
+  @for (owner of ownerdb; track owner.id) {
+    <option value="{{owner.id}}"  >{{owner.name}}</option>
+    }
+</select>
+</div>
+<div class="createowner" >
+  Create a new owner?<a (click) = "showOwnerForm()" class="text-blue-700 cursor-pointer">Click here</a>
   <div 
-  *ngIf = "showModal" 
+  id="ownerForm"
+  *ngIf = "OwnerForm" 
+  [formGroup]="owner" >
+    <form class="">
+      <h1>Fill up Form</h1>
+      <label for="Owner" class="formlabel">Owner</label>
+      <input type="text" name="name"  formControlName="name" placeholder="Enter owner name" autocomplete="off">
+      <div class="btn">
+        <button (click) = "createOwner()">Submit</button>
+      <button (click) = "closeModal()">Cancel</button>
+      </div>
+    </form>
+    
+  </div>
+</div>
+</div> 
+<div id="container">
+<div class="sidebar" *ngIf = "showOnselectOwner">
+  <div class="top">
+    <h1 class="" *ngIf="ownername">
+     Hello , {{ownername}}
+    </h1>
+    <a class="actions" (click)="showDBData()">Show saved tasks</a>
+    <a class="actions" (click)="showListData()">Show unsaved tasks</a>
+    <a class="actions" (click)="openModal()">Add new task</a>
+    <a class="actions" (click)="showProfile()">Update Account</a>
+  </div>
+  <div class="bottom">
+    <a class="actionbtn"  (click) = "selectanotherOwner()">Select another owner</a>
+  </div>
+</div>
+<!-- saved tasks -->
+<div class="savedtasks" *ngIf = "showDatainDB">
+<div class="title">Saved Tasks</div>
+ <div class="task-container">
+  @for (owner of owneritems; track owner.id) {
+    <div class="task">
+      <h1 class="taskh1">
+       Task
+      </h1>
+      <input (change)="onChange($event)" name="task" value="{{owner.task}}"/>
+      <div class="t-btn">
+        <button 
+        (click) = "updateItem(owner.id)"
+       >Update</button>
+        <button 
+        (click) = "deleteItem(owner.id)"
+        >Delete</button>
+      </div>
+    </div>
+    }
+    @empty {
+      <div id="lis-content" class="w-full m-0 rounded-sm">
+          <li class="text-3xl h-10 p-8 flex items-center justify-center mx-auto my-4">No Saved Tasks</li>
+     
+    </div>
+    }
+</div>
+</div>
+<!-- form add task -->
+<div 
+  class="addtask"
+  *ngIf = "showModal"
   id="modal"
   [formGroup]="todo" 
   (ngSubmit)="pushItemtoList()">
     <form action="">
-      <label for="Owner">Owner</label>
-      <input type="text" name="owner"  formControlName="owner" placeholder="Owner">
-      <label for="todo">To do</label>
-      <input type="text" name="task" formControlName="task" placeholder="Task">
-      <button type="submit">Submit</button>
-      <button>Cancel</button>
+      <h1>
+        Task
+      </h1>
+      <input type="text" class="inputform" name="task" formControlName="task" placeholder="Enter a task">
+      <div class="btn">
+          <button type="submit">Submit</button>
+      </div>
     </form>
-  </div>
-  <div 
-  id="modal"
-  *ngIf = "OwnerForm" 
-  [formGroup]="owner" 
-  (ngSubmit)="pushOwnertoList()">
-    <form action="">
-      <label for="Owner">Owner</label>
-      <input type="text" name="name"  formControlName="name" placeholder="Owner">
-      <button type="submit">Submit</button>
-      <button>Cancel</button>
-    </form>
-  </div>
-
-  <div 
-  *ngIf = "showDatainDB" 
-  id="dbdata">
-  <div id="list-wrapper" class="bg-red-300 w-11/12 flex flex-wrap justify-center mx-auto my-0 p-4 gap-14">
-    @for (db of dblist; track db.id) {
-    <div id="lis-content" class="bg-blue-400 w-96 flex flex-col  m-0 rounded-xl">
-        <label for="name" class='text-5xl text-left w-11/12 mx-auto py-3'>Owner:</label>
-        <input 
-        name="owner" 
-        type="text" 
-        id="owner" 
-        (change)="onChange($event)"
-        class="bg-slate-100 h-10 p-8 flex items-center w-11/12 mx-auto my-2 rounded-lg text-2xl focus:outline-none" 
-        value="{{db.owner}}"/>
-        <label for="name" class='text-5xl text-left w-11/12 mx-auto py-3'>To do:</label>
-        <input 
-        name="task" 
-        type="text" 
-        id="task" 
-        (change)="onChange($event)"
-        class="bg-slate-100 h-10 p-8 flex items-center w-11/12 mx-auto my-2 rounded-lg text-2xl focus:outline-none" 
-        value="{{db.task}}"/>
-        <button 
-        class="bg-slate-100 w-11/12 p-4  mx-auto my-2 rounded-xl"
-        (click) = "updateItem(db.id)">'update'</button>
-        <button 
-        class="bg-slate-100 w-11/12 p-4  mx-auto my-2 rounded-xl"
-        (click) = "deleteItem(db.id)">'delete'</button>
-    </div>
-  } @empty {
-    <div id="lis-content" class="w-full m-0 rounded-sm">
-        <li class="text-3xl h-10 p-8 flex items-center justify-center mx-auto my-4">No Database Yet</li>
-   
-  </div>
-  }
-  </div> 
-  </div>
-
-  <div 
-  *ngIf = "showOwner" 
-  id="dbdata">
-  <div id="list-wrapper" class="bg-red-300 w-11/12 flex flex-wrap justify-center mx-auto my-0 p-4 gap-14">
-    @for (owner of ownerlist; track owner.id) {
-    <div id="lis-content" class="bg-blue-400 w-96 flex flex-col  m-0 rounded-xl">
-        <label for="name" class='text-5xl text-left w-11/12 mx-auto py-3'>To do:</label>
-        <input 
-        name="owner" 
-        type="text" 
-        id="owner" 
-        (change)="onChange($event)"
-        class="bg-slate-100 h-10 p-8 flex items-center w-11/12 mx-auto my-2 rounded-lg text-2xl focus:outline-none" 
-        value="{{owner.owner}}"/>
-        <button 
-        class="bg-slate-100 w-11/12 p-4  mx-auto my-2 rounded-xl"
-        (click) = "createOwner(owner)">'update'</button>
-        <button 
-        class="bg-slate-100 w-11/12 p-4  mx-auto my-2 rounded-xl"
-        (click) = "deleteItem(owner.id)">'delete'</button>
-    </div>
-  } @empty {
-    <div id="lis-content" class="w-full m-0 rounded-sm">
-        <li class="text-3xl h-10 p-8 flex items-center justify-center mx-auto my-4">No Database Yet</li>
-   
-  </div>
-  }
-  </div> 
-  </div>
-
-  <div 
+</div>
+<!-- unsavedtask -->
+<div 
   *ngIf = "showDatainList" 
-  id="arraydata">
-  <div id="list-wrapper" class="bg-red-300 w-11/12 flex flex-wrap justify-center mx-auto my-0 p-4 gap-14">
-    @for (todo of todolist; track todo.id) {
-    <div id="lis-content" class="bg-blue-400 w-96 flex flex-col  m-0 rounded-xl">
-        <label for="name" class='text-5xl text-left w-11/12 mx-auto py-3'>Owner:</label>
+  class="unsavedtasks">
+  <div class="title">Unsaved Tasks</div>
+  <div class="task-container">
+    @for (todo of ownerItemList; track todo.id) {
+      <div id="lis-content" class="task">
+        <h1>Task</h1>
+        <!-- <label for="name" class=''>Owner id</label>
         <input 
         name="owner" 
         type="text" 
         id="name" 
-        class="bg-slate-100 h-10 p-8 flex items-center w-11/12 mx-auto my-2 rounded-lg text-2xl focus:outline-none" 
-        value="{{todo.owner}}"/>
-        <label for="name" class='text-5xl text-left w-11/12 mx-auto py-3'>Owner:</label>
+        value="{{todo.owner}}"/> -->
+        <label for="name" class=''>Task</label>
         <input 
         name="task" 
         type="text" 
-        id="task" 
-        class="bg-slate-100 h-10 p-8 flex items-center w-11/12 mx-auto my-2 rounded-lg text-2xl focus:outline-none" 
+        id="task"
         value="{{todo.task}}"/>
-        <button (click)="pushToDatabase()">Push to Database</button>
-        <button (click)="pushItemtoDatabase(todo)">Get item id</button>
-        
-        
+        <div class="t-btn">
+          <button (click)="pushItemtoDatabase(todo)">Save</button>
+        </div>
     </div>
   } @empty {
     <div id="lis-content" class="w-full m-0 rounded-sm">
@@ -149,91 +123,23 @@
   </div>
   }
   </div> 
+  <button (click)="pushToDatabase()">Save All</button>
   </div>
-</div>  
-<!-- show data in db -->
-<div 
-*ngIf = "ownerList" 
-id="dbdata">
-<div id="list-wrapper" class="bg-red-300 w-11/12 flex flex-wrap justify-center mx-auto my-0 p-4 gap-14">
-  @for (owner of ownerdb; track owner.id) {
-  <div id="lis-content" class="bg-blue-400 w-96 flex flex-col  m-0 rounded-xl">
-      <label for="name" class='text-5xl text-left w-11/12 mx-auto py-3'>Owner:</label>
-      <input 
-      name="id" 
-      type="text" 
-      id="id" 
-      (change)="onChange($event)"
-      class="bg-slate-100 h-10 p-8 flex items-center w-11/12 mx-auto my-2 rounded-lg text-2xl focus:outline-none" 
-      value="{{owner.id}}"/>
-      <label for="name" class='text-5xl text-left w-11/12 mx-auto py-3'>To do:</label>
-      <input 
-      name="owner" 
-      type="text" 
-      id="owner" 
-      (change)="onChange($event)"
-      class="bg-slate-100 h-10 p-8 flex items-center w-11/12 mx-auto my-2 rounded-lg text-2xl focus:outline-none" 
-      value="{{owner.name}}"/>
+<!-- update owner -->
+<div class="addtask " *ngIf = "showUpdate">
+  <form >
+    <h1>
+     Name
+    </h1>
+    <input autocomplete="off"  (change)="updateOwner($event)" name="owner"  value="{{ownername}}"/>
+    <div class="btn">
       <button 
-      class="bg-slate-100 w-11/12 p-4  mx-auto my-2 rounded-xl"
-      (click) = "showTaskofOwner(owner.id)">'add new task'</button>
+      class="" 
+      (click) = "updateAccount(ownerId)">Update</button>
       <button 
-      class="bg-slate-100 w-11/12 p-4  mx-auto my-2 rounded-xl"
-      (click) = "showUserTask(owner.id)">'show my tasks'</button>
-      <div *ngIf = "showItems" >
-        @for (ownertask of owneritems; track ownertask.id) {
-          <label for="name" class='text-5xl text-left w-11/12 mx-auto py-3'>Owner:</label>
-          <input 
-          name="id" 
-          type="text" 
-          id="id" 
-          (change)="onChange($event)"
-          class="bg-slate-100 h-10 p-8 flex items-center w-11/12 mx-auto my-2 rounded-lg text-2xl focus:outline-none" 
-          value="{{ownertask.task}}"/>
-        }
-      </div>
-     
-      <button 
-      class="bg-slate-100 w-11/12 p-4  mx-auto my-2 rounded-xl"
-      (click) = "deleteItem(owner.id)">'delete'</button>
-  </div>
-} @empty {
-  <div id="lis-content" class="w-full m-0 rounded-sm">
-      <li class="text-3xl h-10 p-8 flex items-center justify-center mx-auto my-4">No Database Yet</li>
- 
-</div>
-}
-</div> 
-<div 
-*ngIf = "selectedOwner" 
-id="dbdata">
-<div id="list-wrapper" class="bg-red-300 w-11/12 flex flex-wrap justify-center mx-auto my-0 p-4 gap-14">
-  @for (owner of ownerdb; track owner.id) {
-  <div id="lis-content" class="bg-blue-400 w-96 flex flex-col  m-0 rounded-xl">
-    User Profile
-      <h1>{{owner.name}}</h1>
-      <h1>{{owner.id}}</h1>
-      <button (click)="openModal()"> Add new</button>
-  </div>
-} @empty {
-  <div id="lis-content" class="w-full m-0 rounded-sm">
-      <li class="text-3xl h-10 p-8 flex items-center justify-center mx-auto my-4">No Database Yet</li>
- 
-</div>
-}
-<div 
-  *ngIf = "showModal" 
-  id="modal"
-  [formGroup]="todo" 
-  (ngSubmit)="pushItemtoList()">
-    <form action="">
-      <label for="todo">To do</label>
-      <input type="text" name="task" formControlName="task" placeholder="Task">
-      <button type="submit">Submit</button>
-      <button>Cancel</button>
-    </form>
-  </div>
-</div> 
-
+      class=""
+      (click) = "deleteAccount(ownerId)">Delete Account</button>
+    </div>
+  </form>
 </div>
 </div>

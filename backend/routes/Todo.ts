@@ -8,7 +8,7 @@
     router.route("/pushTodo").post(TodoController.pushSelectedTodotoDB);
     router.route("/update/:id").put(TodoController.updateTodo); 
     router.route("/delete/:id").delete(TodoController.deleteTodo); 
-
+    router.route("/deleteowner/:ownerId").delete(TodoController.deleteTodobyOwner); 
 
     const TodoRouter = router;
 

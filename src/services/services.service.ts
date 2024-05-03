@@ -11,7 +11,7 @@ export class ServicesService {
   }
   //push all data in list array to db
   async Postlist(module: string, action: string, list: any[]) {
-    const newList = list.map(item => ({ owner: item.task, task: item.owner }));
+    const newList = list.map(item => ({ owner: item.owner, task: item.task }));
     return axios.post(`http://localhost:8080/${module}/${action}`, newList);
   }
 
@@ -29,8 +29,18 @@ export class ServicesService {
     return axios.delete(`http://localhost:8080/${module}/${action}/${todoid}`)
   }
 
-  async PostOwner(module: string, action: string, name: any[]) {
+  async PostOwner(module: string, action: string, name: any) {
     return axios.post(`http://localhost:8080/${module}/${action}`, name);
+  }
+  async UpdateOwner(module: string, action: string, ownerid: any, name: {}) {
+    return axios.put(`http://localhost:8080/${module}/${action}/${ownerid}`, name);
+  }
+
+  async DeleteOwner(module:string, action:string, todoid:any){
+    return axios.delete(`http://localhost:8080/${module}/${action}/${todoid}`)
+  }
+  async DeleteOwnerTasks(module:string, action:string, ownerId:any){
+    return axios.delete(`http://localhost:8080/${module}/${action}/${ownerId}`)
   }
   GetOwner(module:string, action: string){
     return axios.get(`http://localhost:8080/${module}/${action}`)

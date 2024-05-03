@@ -81,7 +81,21 @@ async function  deleteTodo(req: Request, res: Response) {
         res.status(500).json({ message: 'Error creating todos', error });
     }
 }
+async function  deleteTodobyOwner(req: Request, res: Response) {
+  const ownerId = req.params.ownerId;
+  try{
+  const deletedTodos = await prisma.todo.deleteMany({
+    where: { owner: ownerId }
+  });
+    return updateTodo;
+  res.status(200).json(updateTodo);
+  }
+  catch (error) {
+      console.error('Error creating todos:', error);
+      res.status(500).json({ message: 'Error creating todos', error });
+  }
+}
 
-const TodoController = { pushAlltoDB,pushSelectedTodotoDB, GetAllData, updateTodo , deleteTodo};
+const TodoController = { pushAlltoDB,pushSelectedTodotoDB, GetAllData, updateTodo , deleteTodo, deleteTodobyOwner};
 
 export default TodoController;
