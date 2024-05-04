@@ -117,7 +117,7 @@ export class ToDOComponent {
     this.showDatainList =false;
     this.showUpdate = false;
     this.showModal = false;
-
+    
     this.ownerId = ''
   }
 //push item to todolist
