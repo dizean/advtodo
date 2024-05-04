@@ -2,7 +2,6 @@ import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
 
 const prisma = new PrismaClient();
-
 //retrieve all Item data
 async function GetAllData(req: Request, res: Response) {
   try {

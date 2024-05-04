@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { Validators, FormControl, ReactiveFormsModule, FormGroup,FormArray } from '@angular/forms';
 import { ServicesService } from 'src/services/services.service';
+import { fakeAsync } from '@angular/core/testing';
 
 @Component({
   selector: 'todo',
@@ -86,6 +87,7 @@ export class ToDOComponent {
     const owner = this.ownerdb.find(owner => owner.id === this.ownerId);
     const filteredArray = this.todolist.filter(item => item.owner === this.ownerId);
     this.ownerItemList = filteredArray;
+    this.showDatainDB = true;
     const ownerName = owner.name;
     this.ownername = ownerName;
   }
@@ -111,6 +113,11 @@ export class ToDOComponent {
   selectanotherOwner(){
     this.showOnselectOwner = !this.showOnselectOwner;
     this.hideOnselectOwner = !this.hideOnselectOwner;
+    this.showDatainDB = false;
+    this.showDatainList =false;
+    this.showUpdate = false;
+    this.showModal = false;
+
     this.ownerId = ''
   }
 //push item to todolist

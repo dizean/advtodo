@@ -41,7 +41,7 @@
 }
 
 #container{
-    @apply w-full  bg-blue-300 flex
+    @apply w-full flex
 }
 #container .sidebar{
     @apply w-1/6 flex flex-col p-5 h-screen bg-[#4F4A45] justify-between sticky top-0
