@@ -100,6 +100,7 @@ class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:
   *ngIf = "showDatainList" 
   class="unsavedtasks">
   <div class="title">Unsaved Tasks</div>
+  <button (click)="pushToDatabase()" class="saveall">Save All</button>
   <div class="task-container">
     @for (todo of ownerItemList; track todo.id) {
       <div id="lis-content" class="task">
@@ -116,12 +117,11 @@ class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:
     </div>
   } @empty {
     <div id="lis-content" class="w-full m-0 rounded-sm">
-        <li class="text-3xl h-10 p-8 flex items-center justify-center mx-auto my-4">No Array Yet</li>
+        <li class="text-3xl h-10 p-8 flex items-center justify-center mx-auto my-4">No Tasks Yet</li>
    
   </div>
   }
   </div> 
-  <button (click)="pushToDatabase()">Save All</button>
   </div>
 
 <!-- update owner -->

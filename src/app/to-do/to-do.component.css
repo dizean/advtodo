@@ -119,3 +119,6 @@ button{
 .unsavedtasks label{
     @apply text-[2rem] w-full
 }
+.saveall{
+    @apply bg-[#ED7D31] w-1/6 py-5 mx-5 rounded-lg text-xl text-white
+}
