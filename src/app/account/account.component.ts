@@ -20,18 +20,18 @@ account = new FormGroup({
 })
 async NewAccount(){
   const accountdetails = this.account.value;
-    const response = await this.apiService.Create('account','create',accountdetails);
-    if (response){
-      this.account.setValue({
-        username:'',
-        password: ''
-      })
-    console.log(response);
-    this.route.navigate(['/todo'])
-    }
-    else{
-      alert("error")
-    }
-    
+  if(accountdetails.username === '' || accountdetails.password === ''){
+    console.log('error')
+  }
+  else{
+  this.account.setValue({
+    username:'',
+    password: ''
+  })
+  alert("Account successfully created.")
+  this.route.navigate(['/todo']);
+    console.log('Navigated to TodoComponent');
+  const response = await this.apiService.Create('account','create',accountdetails);
+  }
 }
 }
