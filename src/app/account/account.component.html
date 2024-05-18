@@ -2,8 +2,8 @@
     Create a new owner?<a  class="text-blue-700 cursor-pointer">Click here</a>
     <div 
     id="ownerForm"
-    [formGroup]="account" >
-      <form (ngSubmit)="NewAccount()" >
+     >
+      <form (ngSubmit)="NewAccount()" [formGroup]="account" >
         <h1>Fill up Form</h1>
         <label for="username" class="formlabel">Username</label>
         <input type="text" id="username" name="username"  formControlName="username" placeholder="Enter username" autocomplete="off" required>
