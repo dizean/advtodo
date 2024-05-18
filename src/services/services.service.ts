@@ -7,7 +7,7 @@ export class ServicesService {
 
   //get all data from db
   GetAllData(module:string, action: string){
-    return axios.get(`http://localhost:8080/${module}/${action}`)
+    return axios.get(`https://advtod-be.onrender.com/${module}/${action}`)
   }
   //push all data in list array to db
   async Postlist(module: string, action: string, list: any[]) {
@@ -45,6 +45,6 @@ export class ServicesService {
   }
   //retrieve owner
   GetOwner(module:string, action: string){
-    return axios.get(`http://localhost:8080/${module}/${action}`)
+    return axios.get(`https://advtod-be.onrender.com/${module}/${action}`)
   }
 }

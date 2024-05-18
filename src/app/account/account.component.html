@@ -1,0 +1,17 @@
+<div class="createowner" >
+    Create a new owner?<a  class="text-blue-700 cursor-pointer">Click here</a>
+    <div 
+    id="ownerForm"
+     >
+      <form (ngSubmit)="NewAccount()" [formGroup]="account" >
+        <h1>Fill up Form</h1>
+        <label for="username" class="formlabel">Username</label>
+        <input type="text" id="username" name="username"  formControlName="username" placeholder="Enter username" autocomplete="off" required>
+        <label for="password" class="formlabel">Password</label>
+        <input type="password" id="password" name="password"  formControlName="password" placeholder="Enter password" autocomplete="off" required>
+        <div class="btn">
+          <button type="submit">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>

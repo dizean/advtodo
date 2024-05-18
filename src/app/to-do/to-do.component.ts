@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { Validators, FormControl, ReactiveFormsModule, FormGroup,FormArray } from '@angular/forms';
 import { ServicesService } from 'src/services/services.service';
-import { fakeAsync } from '@angular/core/testing';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'todo',
@@ -12,7 +12,7 @@ import { fakeAsync } from '@angular/core/testing';
   styleUrl: './to-do.component.css'
 })
 export class ToDOComponent {
-  constructor(public apiService :ServicesService){}
+  constructor(public apiService :ServicesService, private router: Router){}
    todolist: any[] = [] //list for unsaved tasks
    dblist: any[] = [] //list for saved tasks
    ownerdb: any[] = []
@@ -36,7 +36,7 @@ export class ToDOComponent {
     this.OwnerForm = false
   }
    //function for hiding/displaying div for saving task to db
-  showDatainDB = true
+  showDatainDB = false
   showDBData(){
     this.showDatainDB = true
     this.showDatainList = false;
@@ -89,7 +89,7 @@ export class ToDOComponent {
     this.ownerItemList = filteredArray;
     this.showDatainDB = true;
     const ownerName = owner.name;
-    this.ownername = ownerName;
+    this.ownername = ownerName; 
   }
  //get item data
   async AllData(): Promise<any>  {
@@ -225,7 +225,6 @@ async createOwner(){
   const nameStore = {name: name};
   try {
     const response = await this.apiService.PostOwner('owner', 'createowner', nameStore);
-
     if (response) { 
       console.log('Items pushed successfully');
       
